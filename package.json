@@ -1,6 +1,6 @@
 {
   "name": "@equitysim/trkd-client",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "REST Client for TRKD API",
   "main": "index.js",
   "type": "module",

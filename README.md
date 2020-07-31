@@ -4,12 +4,12 @@ REST Client for Thomson Reuters Knowledge Direct (TRKD) API
 # Installation
 **Requires module support**
 ```
-$ npm install trkd-client --save
+$ npm install @equitysim/trkd-client --save
 ```
 
 # Usage
 ``` nodejs
-import TRKDClient from 'trkd-client'
+import TRKDClient from '@equitysim/trkd-client'
 
 TRKDClient.init({
   application: TRKD_APP,
