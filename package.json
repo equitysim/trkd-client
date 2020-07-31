@@ -1,0 +1,34 @@
+{
+  "name": "trkd-client",
+  "version": "0.1.0",
+  "description": "REST Client for TRKD API",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node --experimental-modules --es-module-specifier-resolution=node ./index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/equitysim/trkd-client.git"
+  },
+  "keywords": [
+    "equitysim",
+    "finance",
+    "trkd",
+    "thomson reuters"
+  ],
+  "author": "equitysim",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/equitysim/trkd-client/issues"
+  },
+  "homepage": "https://github.com/equitysim/trkd-client#readme",
+  "dependencies": {
+    "node-fetch": "^2.6.0"
+  },
+  "devDependencies": {
+    "eslint": "^7.5.0",
+    "eslint-plugin-import": "^2.22.0"
+  }
+}
