@@ -138,11 +138,24 @@ has no change
 | application | null | string | trkd provided
 | username | null | string | trkd provided
 | password | null | string | trkd provided
+| redisConnection | null | object | redis or ioredis connection
 | format | true | boolean | format responses into proper json
 
 # Caching and Limiting
 
-TR has rate limits on every route. It is recommended to use a rate limiter like [bottleneck](https://www.npmjs.com/package/bottleneck) and to cache responses in [redis](https://redis.io/).
+A [redis](https://redis.io) connection may be passed in the init options. Currently a [redis](https://www.npmjs.com/package/redis) or [ioredis](https://www.npmjs.com/package/ioredis) may be used.
+To be used you must set the expiration times (in seconds) per method or group as well.
+```
+TRKDClient.expiration.quotes.retrieveItem = 5
+TRKDClient.expiration.timeSeries = {
+  getIntraday = 60, // one minute
+  getInterday = 60 * 60 * 24, // one day
+  getExchangeData = 60 * 60 * 24 * 7, // one week
+  getTimezone = 60 * 60 * 24 * 30, // one month
+}
+```
+
+TR has rate limits on every route. It is recommended to use a rate limiter like [bottleneck](https://www.npmjs.com/package/bottleneck).
 
 # Contributing
 Contributions are very welcome and encouraged! Currently the client is very focused on EquitySim use case, but we are more than happy to expand on it.

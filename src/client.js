@@ -1,11 +1,7 @@
 import fetch from 'node-fetch'
-import { TRKDError } from './src/dto/errors'
-import fundamentalMethods from './src/methods/fundamentals'
-import quoteMethods from './src/methods/quotes'
-import searchMethods from './src/methods/search'
-import streetEventMethods from './src/methods/street-events'
-import timeSeriesMethods from './src/methods/time-series'
-import tokenManagementMethods from './src/methods/token-management'
+import { TRKDError } from './dto/errors'
+import * as methodGroups from './methods'
+import { formatFunc, hashCode } from './utils'
 
 const TOKEN_EXP_BUFFER_MS = 120000
 
@@ -17,41 +13,43 @@ export default class TRKDClient {
    * @param {string} options.application - TR applicationId
    * @param {string} options.username - TR username
    * @param {string} options.password - TR password
-   * @param {bool} options.format - Format responses - default: true
+   * @param {?object<redisConnection>} options.redisConnection - redis|ioredis
+   * @param {?bool} options.format - Format responses - default: true
    */
   static init(options) {
     if (options.format === undefined) TRKDClient.format = true
     else TRKDClient.format = options.format
 
+    TRKDClient._redisConn = options.redisConnection
+
     TRKDClient._serviceAccount.application = options.application
     TRKDClient._serviceAccount.username = options.username
     TRKDClient._serviceAccount.password = options.password
+    TRKDClient._isInitialized = true
   }
 
+  /**
+   * Redis cache expiration seconds per method
+   *
+   * @property {object} fundamentals
+   * @property {object} quotes
+   * @property {object} search
+   * @property {object} streetEvents
+   * @property {object} timeSeries
+   */
+  static get expiration() { return TRKDClient._expiration }
+
+  /**
+   * @returns {TRKDClient}
+   */
   constructor() {
     this.host = 'https://api.trkd.thomsonreuters.com'
     this._request = this._request.bind(this)
     this.format = TRKDClient.format
     this.log = TRKDClient.log
 
-    // manually inputted here for autocompletion
-    this.fundamentals = fundamentalMethods
-    this.quotes = quoteMethods
-    this.search = searchMethods
-    this.streetEvents = streetEventMethods
-    this.timeSeries = timeSeriesMethods
-    this._tokenManagement = tokenManagementMethods
-
-    const methodGroups = {
-      fundamentals: fundamentalMethods,
-      quotes: quoteMethods,
-      search: searchMethods,
-      streetEvents: streetEventMethods,
-      timeSeries: timeSeriesMethods,
-      _tokenManagement: tokenManagementMethods,
-    }
-
     for (const [name, methods] of Object.entries(methodGroups)) {
+      this[name] = methods
       for (const [key, method] of Object.entries(methods)) {
         this[name][key] = method.bind(this)
       }
@@ -87,16 +85,27 @@ export default class TRKDClient {
   /**
    * Sends HTTP request to TR with auto authorization
    *
+   * @param {string} group
+   * @param {function} method
    * @param {string} path
    * @param {object} body
    * @returns {Promise}
    * @private
    */
-  async _request(path, body) {
+  async _request(group, method, path, body) {
+    if (!TRKDClient._isInitialized) throw new Error('TRKDClient has not been initialized!')
+
     const headers = {
       'Content-Type': 'application/json',
       'X-Trkd-Auth-Token': TRKDClient._isAuthTokenValid ? TRKDClient._serviceAccount.token : null,
       'X-Trkd-Auth-ApplicationID': TRKDClient._serviceAccount.application,
+    }
+
+    const methodName = formatFunc(method)
+    const key = `trkd:${methodName}:${hashCode(JSON.stringify(body))}`
+    if (TRKDClient._redisConn) {
+      const cache = await TRKDClient._redisConn.get(key)
+      if (cache) return JSON.parse(cache)
     }
 
     const execCall = async () => {
@@ -109,6 +118,10 @@ export default class TRKDClient {
       if (isJson) {
         const json = await res.json()
         if (json['Fault']) throw new TRKDError(json)
+        if (TRKDClient._redisConn && typeof TRKDClient.expiration[group][methodName] === 'number') {
+          TRKDClient._redisConn.set(key, JSON.stringify(json), 'EX', TRKDClient.expiration[group][methodName])
+        }
+
         return json
       }
 
@@ -116,7 +129,7 @@ export default class TRKDClient {
     }
 
     const preAuth = async () => {
-      await this._tokenManagement.createServiceToken(TRKDClient)
+      await this.tokenManagement.createServiceToken(TRKDClient)
       headers['X-Trkd-Auth-Token'] = TRKDClient._serviceAccount.token
       return execCall()
     }
@@ -135,3 +148,8 @@ TRKDClient._serviceAccount = {
   token: null,
   tokenExpiry: null,
 }
+
+TRKDClient._expiration = Object.entries(methodGroups).reduce((acc, [group, methods]) => {
+  acc[group] = Object.keys(methods).reduce((acc, key) => ({ ...acc, [key]: null }), {})
+  return acc
+}, {})

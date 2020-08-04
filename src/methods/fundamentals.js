@@ -1,6 +1,11 @@
 import { ValidationError } from '../dto/errors'
+import { fileURLToPath } from 'url'
+import path from 'path'
 
-export default {
+const __filename = fileURLToPath(import.meta.url)
+const filename = path.parse(__filename).name
+
+const methods = {
   /**
    *
    * @param {string} companyId
@@ -21,8 +26,10 @@ export default {
       }
     };
 
-    const res = await this._request(path, payload)
+    const res = await this._request(filename, methods.getSnapshotReports, path, payload)
     // format
     return res
   }
 }
+
+export default methods

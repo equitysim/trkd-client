@@ -1,14 +1,21 @@
 import { ValidationError } from '../dto/errors'
 import { formatTimeSeriesResponse, formatExchangeDataResponse, formatTimezoneResponse } from '../formatting'
 import { INTERDAY_INTERVAL } from '../utils/config'
+import { fileURLToPath } from 'url'
+import path from 'path'
+import { formatFile } from '../utils'
 
-export default {
+const __filename = fileURLToPath(import.meta.url)
+const filename = formatFile(path.parse(__filename).name)
+
+const methods = {
   /**
    *
    * @param {string} ric
    * @param {Date} startTime
    * @param {Date} endTime
    * @param {string} interval - INTRADAY_INTERVAL
+   * @returns {Promise}
    */
   async getIntraday(ric, startTime, endTime, interval) {
     const intervals = Object.values(INTRADAY_INTERVAL)
@@ -30,11 +37,19 @@ export default {
         Interval: interval,
       },
     }
-    const res = await this._request(path, payload)
+    const res = await this._request(filename, methods.getIntraday, path, payload)
     if (!this.format) return res
 
     return formatTimeSeriesResponse(res['GetIntradayTimeSeries_Response_5'])
   },
+  /**
+   *
+   * @param {string} ric
+   * @param {Date} startTime
+   * @param {Date} endTime
+   * @param {string} interval - INTERDAY_INTERVAL
+   * @returns {Promise}
+   */
   async getInterday(ric, startTime, endTime, interval) {
     const intervals = Object.values(INTERDAY_INTERVAL)
 
@@ -55,11 +70,16 @@ export default {
         Interval: interval,
       },
     }
-    const res = await this._request(path, payload)
+    const res = await this._request(filename, methods.getInterday, path, payload)
     if (!this.format) return res
 
     return formatTimeSeriesResponse(res['GetInterdayTimeSeries_Response_5'])
   },
+  /**
+   *
+   * @param {string} exchangeCode
+   * @returns {Promise}
+   */
   async getExchangeData(exchangeCode) {
     if (typeof exchangeCode !== 'string') throw new TypeError('exchangeCode must be a string')
 
@@ -70,20 +90,25 @@ export default {
       },
     }
 
-    const res = await this._request(path, payload)
+    const res = await this._request(filename, methods.getExchangeData, path, payload)
     if (!this.format) return res
 
     return formatExchangeDataResponse(res)
   },
+  /**
+   * @returns {Promise}
+   */
   async getTimezone() {
     const path = '/api/TimeSeries/TimeSeries.svc/REST/TimeSeries_1/GetTimezoneList_1'
     const payload = {
       GetTimezoneList_Request_1: {},
     }
 
-    const res = await this._request(path, payload)
+    const res = await this._request(filename, methods.getTimezone, path, payload)
     if (!this.format) return res
 
     return formatTimezoneResponse(res)
   },
 }
+
+export default methods

@@ -1,3 +1,9 @@
+/**
+ * Constructs a TRKD formatted payload query
+ *
+ * @param {object} queries
+ * @returns {object}
+ */
 export const constructQuery = (queries) => {
   const query = {}
   for (let [key, value] of Object.entries(queries)) {
@@ -84,17 +90,17 @@ export const bondInstrumentQueries = {
 }
 
 export const derivativeQuoteQueries = {
-  'CommonName': true,
-  'DerivedCategory': true,
-  'AssetCategory': 'EIO',
-  'CallPutOption': true,
-  'Currency': true,
-  'ExchangeCode': 'OPQ',
-  'ExpiryDate': true,
-  'IsChain': false,
-  'RIC': true,
-  'StrikePrice': true,
-  'TickerSymbol': true,
-  'UnderlyingIssuerName': true,
-  'UnderlyingQuoteRIC': true
+  CommonName: true,
+  DerivedCategory: true,
+  AssetCategory: 'EIO',
+  CallPutOption: true,
+  Currency: true,
+  ExchangeCode: 'OPQ',
+  ExpiryDate: true,
+  IsChain: false,
+  RIC: true,
+  StrikePrice: true,
+  TickerSymbol: true,
+  UnderlyingIssuerName: true,
+  UnderlyingQuoteRIC: true,
 }

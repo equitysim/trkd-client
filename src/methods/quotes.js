@@ -1,6 +1,11 @@
 import { formatQuoteResponse } from '../formatting'
+import { fileURLToPath } from 'url'
+import path from 'path'
 
-export default {
+const __filename = fileURLToPath(import.meta.url)
+const filename = path.parse(__filename).name
+
+const methods = {
   /**
    * @param {string|[string]} ric
    * @param {?[string]} fields
@@ -27,8 +32,10 @@ export default {
       },
     }
 
-    const res = await this._request(path, payload)
+    const res = await this._request(filename, methods.retrieveItem, path, payload)
     if (!this.format) return res
     return formatQuoteResponse(res)
   },
 }
+
+export default methods

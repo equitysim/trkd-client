@@ -11,11 +11,11 @@ export default {
     type: Number,
     name: 'tradePrice',
   },
-  CF_BID: {
+  BID: {
     type: Number,
     name: 'bid',
   },
-  CF_ASK: {
+  ASK: {
     type: Number,
     name: 'ask',
   },
@@ -27,13 +27,13 @@ export default {
     type: Number,
     name: 'openPrice',
   },
-  CF_CLOSE: {
+  CLOSE_PRC: {
     type: Number,
-    name: 'lastClosePrice',
+    name: 'closePrice'
   },
   HSTCLSDATE: {
     type: Date,
-    name: 'lastCloseDate',
+    name: 'closeDate',
   },
   YRHIGH: {
     type: Number,
@@ -45,7 +45,7 @@ export default {
   },
   NETCHNG_1: {
     type: Number,
-    name: 'lastNetChange',
+    name: 'netChange',
   },
   HIGH_1: {
     type: Number,
@@ -127,10 +127,6 @@ export default {
     type: Number,
     name: 'openInterestNetChange',
   },
-  CF_NETCHNG: {
-    type: Number,
-    name: 'lastNetChange',
-  },
   PUTCALLIND: {
     type: Number,
     name: 'optionType',
@@ -195,8 +191,28 @@ export default {
     type: String,
     name: 'cfCurrency',
   },
+  CF_BID: {
+    type: Number,
+    name: 'cfBid',
+  },
+  CF_ASK: {
+    type: Number,
+    name: 'cfAsk',
+  },
   CF_LAST: {
     type: Number,
     name: 'cfLast',
+  },
+  CF_OPEN: {
+    type: Number,
+    name: 'cfOpenPrice'
+  },
+  CF_CLOSE: {
+    type: Number,
+    name: 'cfClosePrice',
+  },
+  CF_NETCHNG: {
+    type: Number,
+    name: 'cfNetChange',
   },
 };

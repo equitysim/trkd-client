@@ -1,4 +1,11 @@
-export default {
+import { fileURLToPath } from 'url'
+import path from 'path'
+import { formatFile } from '../utils'
+
+const __filename = fileURLToPath(import.meta.url)
+const filename = formatFile(path.parse(__filename).name)
+
+const methods = {
   async getEventHeadlines(eventType, startDate, endDate) {
     const path = '/api/StreetEvents/StreetEvents.svc/REST/StreetEvents_2/GetEventHeadlines_1';
     const payload = {
@@ -20,7 +27,7 @@ export default {
       }
     };
 
-    const res = await this._request(path, payload);
+    const res = await this._request(filename, methods.getEventHeadlines, path, payload);
     if (!this.format) return res
 
     // TODO: format
@@ -35,10 +42,12 @@ export default {
       }
     };
 
-    const res = await this._request(path, payload);
+    const res = await this._request(filename, methods.getEventHeadlines, path, payload);
     if (!this.format) return res
 
     // TODO: format
     return res
   }
 }
+
+export default methods

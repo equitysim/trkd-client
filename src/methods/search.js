@@ -1,10 +1,16 @@
 import { searchAllQueries, constructQuery, equityQuoteQueries, bondInstrumentQueries, defaultHeader } from '../utils/defaults'
+import { fileURLToPath } from 'url'
+import path from 'path'
 
-export default {
+const __filename = fileURLToPath(import.meta.url)
+const filename = path.parse(__filename).name
+
+const methods = {
   /**
    * @param {object} queries
    * @param {object} filters
    * @param {object} header
+   * @returns {Promise}
    */
   async all(queries = searchAllQueries, filters = {}, header = defaultHeader) {
     const path = '/api/Search/Search.svc/REST/Searchall_1/GetSearchall_1'
@@ -19,9 +25,15 @@ export default {
         Filter: [filter],
       },
     }
-    const res = await this._request(path, payload)
+    const res = await this._request(filename, methods.all.name.replace('bound ', ), path, payload)
     return res
   },
+  /**
+   * @param {object} queries
+   * @param {object} filters
+   * @param {object} header
+   * @returns {Promise}
+   */
   async derivativeQuote(queries = optionQuoteQueries, filters = {}, header = defalutHeader) {
     const path = `/api/Search/Search.svc/REST/DerivativeQuote_1/GetDerivativeQuote_1`
 
@@ -36,10 +48,10 @@ export default {
         Filter: [filter],
       },
     }
-    const res = await this._request(path, payload)
+    const res = await this._request(filename, methods.derivativeQuote, path, payload)
     return res
   },
-    /**
+  /**
    * @param {object} queries
    * @param {object} filters
    * @param {object} header
@@ -58,10 +70,10 @@ export default {
         Filter: [filter],
       },
     }
-    const res = await this._request(path, payload)
+    const res = await this._request(filename, methods.equityQuote, path, payload)
     return res
   },
-    /**
+  /**
    * @param {object} queries
    * @param {object} filters
    * @param {object} header
@@ -81,10 +93,10 @@ export default {
       },
     }
 
-    const res = await this._request(path, payload)
+    const res = await this._request(filename, methods.fundQuote, path, payload)
     return res
   },
-    /**
+  /**
    * @param {object} queries
    * @param {object} filters
    * @param {object} header
@@ -103,7 +115,9 @@ export default {
       },
     }
 
-    const res = await this._request(path, payload)
+    const res = await this._request(filename, methods.governmentAndCorporateBondInstruments, path, payload)
     return res
-  }
+  },
 }
+
+export default methods
