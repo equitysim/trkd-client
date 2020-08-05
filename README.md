@@ -25,6 +25,8 @@ trkdClient.quotes.retrieveItem('AAPL.O').then(quote => {
 
 # Catalog
 
+The trkdClient object shape is modeled after the TRKD catalog with method names matching those within TRKD.
+
 ## Fundamentals
 ```
 trkdClient.fundamentals.getSnapshotReports(companyId, companyIdType = 'RIC')
@@ -37,9 +39,9 @@ trkdClient.quotes.retrieveItem(ric, fields = null)
 
 ## Search
 ```
-trkdClient.search.all(queries = Query.searchAll, filters = {}, header = Query.header)
+trkdClient.search.all(queries = Query.all, filters = {}, header = Query.header)
 
-trkdClient.search.derivativeQuote(queries = Query.optionQuote, filters = {}, header = defalutHeader)
+trkdClient.search.derivativeQuote(queries = Query.derivativeQuote, filters = {}, header = Query.header)
 
 trkdClient.search.equityQuote(queries = Query.equityQuote, filters = {}, header = Query.header)
 
@@ -133,7 +135,7 @@ becomes:
 
 has no change
 ```
-
+---
 # Init Options
 | Name | Default | type | Notes |
 |------|---------|------|---------|

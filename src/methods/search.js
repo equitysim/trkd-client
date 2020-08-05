@@ -1,6 +1,12 @@
 import { fileURLToPath } from 'url'
 import path from 'path'
 import Query from '../models/query'
+import {
+  formatSearchEquityQuoteResponse,
+  formatSearchAllResponse,
+  formatSearchFundQuoteResponse,
+  formatSearchGovernmentAndCorporateBondInstruments,
+} from '../formatting'
 
 const __filename = fileURLToPath(import.meta.url)
 const filename = path.parse(__filename).name
@@ -12,7 +18,7 @@ const methods = {
    * @param {object} header
    * @returns {Promise}
    */
-  async all(queries = Query.searchAll, filters = {}, header = Query.header) {
+  async all(queries = Query.all, filters = {}, header = Query.header) {
     const path = '/api/Search/Search.svc/REST/Searchall_1/GetSearchall_1'
 
     const query = new Query(queries)
@@ -25,8 +31,9 @@ const methods = {
         Filter: [filter],
       },
     }
-    const res = await this._request(filename, methods.all.name.replace('bound ', ), path, payload)
-    return res
+    const res = await this._request(filename, methods.all, path, payload)
+    if (!this.format) return res
+    return formatSearchAllResponse(res)
   },
   /**
    * @param {object} queries
@@ -34,8 +41,8 @@ const methods = {
    * @param {object} header
    * @returns {Promise}
    */
-  async derivativeQuote(queries = Query.optionQuote, filters = {}, header = defalutHeader) {
-    const path = `/api/Search/Search.svc/REST/DerivativeQuote_1/GetDerivativeQuote_1`
+  async derivativeQuote(queries = Query.optionQuote, filters = {}, header = Query.header) {
+    const path = '/api/Search/Search.svc/REST/DerivativeQuote_1/GetDerivativeQuote_1'
 
     const query = new Query(queries)
     const filter = new Query(filters)
@@ -71,7 +78,8 @@ const methods = {
       },
     }
     const res = await this._request(filename, methods.equityQuote, path, payload)
-    return res
+    if (!this.format) return res
+    return formatSearchEquityQuoteResponse(res)
   },
   /**
    * @param {object} queries
@@ -94,7 +102,8 @@ const methods = {
     }
 
     const res = await this._request(filename, methods.fundQuote, path, payload)
-    return res
+    if (!this.format) return res
+    return formatSearchFundQuoteResponse(res)
   },
   /**
    * @param {object} queries
@@ -116,7 +125,8 @@ const methods = {
     }
 
     const res = await this._request(filename, methods.governmentAndCorporateBondInstruments, path, payload)
-    return res
+    if (!this.format) return res
+    return formatSearchGovernmentAndCorporateBondInstruments(res)
   },
 }
 

@@ -61,7 +61,7 @@ export default {
   },
   RECORDTYPE: {
     type: String,
-    name: 'type',
+    name: 'recordType',
   },
   DIVIDEND: {
     type: Number,

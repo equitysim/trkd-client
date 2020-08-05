@@ -40,7 +40,7 @@ export default class Query {
     }
   }
 
-  static get searchAll() {
+  static get all() {
     return {
       BusinessEntity: 'QUOTE',
       Currency: true,
