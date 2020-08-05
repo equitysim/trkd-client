@@ -87,7 +87,6 @@ export const formatTimezoneResponse = (trkdResponse) => {
       if (strHours.length === 1) strHours = '0' + strHours
       strHours = '+' + strHours
     } else {
-      console.log(strHours)
       if (strHours.length === 2) strHours = strHours.replace('-', '-0')
     }
 

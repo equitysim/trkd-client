@@ -37,13 +37,15 @@ trkdClient.quotes.retrieveItem(ric, fields = null)
 
 ## Search
 ```
-trkdClient.search.all(queries = searchAllQueries, filters = {}, header = defaultHeader)
+trkdClient.search.all(queries = Query.searchAll, filters = {}, header = Query.header)
 
-trkdClient.search.equityQuote(queries = equityQuoteQueries, filters = {}, header = defaultHeader)
+trkdClient.search.derivativeQuote(queries = Query.optionQuote, filters = {}, header = defalutHeader)
 
-trkdClient.search.fundQuote(queries = fundQuoteQueries, filters = {}, header = defaultHeader)
+trkdClient.search.equityQuote(queries = Query.equityQuote, filters = {}, header = Query.header)
 
-trkdClient.search.governmentAndCorporateBondInstruments(queries = bondInstrumentQueries, filters = {}, header = defaultHeader)
+trkdClient.search.fundQuote(queries = Query.fundQuote, filters = {}, header = Query.header)
+
+trkdClient.search.governmentAndCorporateBondInstruments(queries = Query.bondInstrument, filters = {}, header = Query.header)
 ```
 
 ## Street Events
@@ -148,10 +150,10 @@ To be used you must set the expiration times (in seconds) per method or group as
 ```
 TRKDClient.expiration.quotes.retrieveItem = 5
 TRKDClient.expiration.timeSeries = {
-  getIntraday = 60, // one minute
-  getInterday = 60 * 60 * 24, // one day
-  getExchangeData = 60 * 60 * 24 * 7, // one week
-  getTimezone = 60 * 60 * 24 * 30, // one month
+  getIntraday: 60, // one minute
+  getInterday: 60 * 60 * 24, // one day
+  getExchangeData: 60 * 60 * 24 * 7, // one week
+  getTimezone: 60 * 60 * 24 * 30, // one month
 }
 ```
 

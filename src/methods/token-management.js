@@ -28,6 +28,9 @@ export default {
     if (!res.ok) throw new Error(res.statusText)
     const json = await res.json()
     const responseObj = json['CreateServiceToken_Response_1']
+    if (TRKDClient._redisConn) {
+      TRKDClient._redisConn.set(`trkd:${TRKDClient._serviceAccount.username}`, JSON.stringify(responseObj))
+    }
     TRKDClient.updateCredentials(responseObj['Token'], new Date(responseObj['Expiration']))
     return responseObj
   },

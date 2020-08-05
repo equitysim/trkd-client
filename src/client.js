@@ -37,7 +37,12 @@ export default class TRKDClient {
    * @property {object} streetEvents
    * @property {object} timeSeries
    */
-  static get expiration() { return TRKDClient._expiration }
+  static get expiration() {
+    return TRKDClient._expiration
+  }
+  static set expiration(value) {
+    TRKDClient._expiration = { ...TRKDClient._expiration, ...value }
+  }
 
   /**
    * @returns {TRKDClient}
@@ -137,7 +142,20 @@ export default class TRKDClient {
     const isTokenSet = headers['X-Trkd-Auth-Token']
     if (isTokenSet) return execCall()
 
-    return preAuth()
+    if (!TRKDClient._redisConn) return preAuth()
+
+    if (TRKDClient._redisConn) {
+      const cache = await TRKDClient._redisConn.get(`trkd:${TRKDClient._serviceAccount.username}`)
+      if (cache) {
+        const parsed = JSON.parse(cache)
+        const expiration = new Date(parsed['Expiration'])
+        if (new Date().getTime() > expiration.getTime() - TOKEN_EXP_BUFFER_MS) return preAuth()
+
+        TRKDClient.updateCredentials(parsed['Token'], expiration)
+        headers['X-Trkd-Auth-Token'] = TRKDClient._serviceAccount.token
+        return execCall()
+      }
+    }
   }
 }
 

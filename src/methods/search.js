@@ -1,6 +1,6 @@
-import { searchAllQueries, constructQuery, equityQuoteQueries, bondInstrumentQueries, defaultHeader } from '../utils/defaults'
 import { fileURLToPath } from 'url'
 import path from 'path'
+import Query from '../models/query'
 
 const __filename = fileURLToPath(import.meta.url)
 const filename = path.parse(__filename).name
@@ -12,11 +12,11 @@ const methods = {
    * @param {object} header
    * @returns {Promise}
    */
-  async all(queries = searchAllQueries, filters = {}, header = defaultHeader) {
+  async all(queries = Query.searchAll, filters = {}, header = Query.header) {
     const path = '/api/Search/Search.svc/REST/Searchall_1/GetSearchall_1'
 
-    const query = constructQuery(queries)
-    const filter = constructQuery(filters)
+    const query = new Query(queries)
+    const filter = new Query(filters)
 
     const payload = {
       GetSearchall_Request_1: {
@@ -34,11 +34,11 @@ const methods = {
    * @param {object} header
    * @returns {Promise}
    */
-  async derivativeQuote(queries = optionQuoteQueries, filters = {}, header = defalutHeader) {
+  async derivativeQuote(queries = Query.optionQuote, filters = {}, header = defalutHeader) {
     const path = `/api/Search/Search.svc/REST/DerivativeQuote_1/GetDerivativeQuote_1`
 
-    const query = constructQuery(queries)
-    const filter = constructQuery(filters)
+    const query = new Query(queries)
+    const filter = new Query(filters)
     const payload = {
       GetDerivativeQuote_Request_1: {
         UnentitledAccess: true,
@@ -56,11 +56,11 @@ const methods = {
    * @param {object} filters
    * @param {object} header
    */
-  async equityQuote(queries = equityQuoteQueries, filters = {}, header = defaultHeader) {
+  async equityQuote(queries = Query.equityQuote, filters = {}, header = Query.header) {
     const path = `/api/Search/Search.svc/REST/EquityQuote_1/GetEquityQuote_1`
 
-    const query = constructQuery(queries)
-    const filter = constructQuery(filters)
+    const query = new Query(queries)
+    const filter = new Query(filters)
     const payload = {
       GetEquityQuote_Request_1: {
         UnentitledAccess: true,
@@ -78,11 +78,11 @@ const methods = {
    * @param {object} filters
    * @param {object} header
    */
-  async fundQuote(queries = fundQuoteQueries, filters = {}, header = defaultHeader) {
+  async fundQuote(queries = Query.fundQuote, filters = {}, header = Query.header) {
     const path = `/api/Search/Search.svc/REST/FundQuote_1/GetFundQuote_1`
 
-    const query = constructQuery(queries)
-    const filter = constructQuery(filters)
+    const query = new Query(queries)
+    const filter = new Query(filters)
     const payload = {
       GetFundQuote_Request_1: {
         UnentitledAccess: true,
@@ -101,11 +101,11 @@ const methods = {
    * @param {object} filters
    * @param {object} header
    */
-  async governmentAndCorporateBondInstruments(queries = bondInstrumentQueries, filters = {}, header = defaultHeader) {
+  async governmentAndCorporateBondInstruments(queries = Query.bondInstrument, filters = {}, header = Query.header) {
     const path = '/api/Search/Search.svc/REST/GovCorpInst_1/GetGovCorpInst_1'
 
-    const query = constructQuery(queries)
-    const filter = constructQuery(filters)
+    const query = new Query(queries)
+    const filter = new Query(filters)
 
     const payload = {
       GetGovCorpInst_Request_1: {
