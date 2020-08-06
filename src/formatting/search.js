@@ -35,4 +35,4 @@ export const formatSearchEquityQuoteResponse = (trkdResponse) => formatSearchIte
 
 export const formatSearchFundQuoteResponse = (trkdResponse) => formatSearchItems('GetFundQuote_Response_1', trkdResponse)
 
-export const formatSearchGovernmentAndCorporateBondInstruments = (trkdResponse) => formatSearchItems('GetGovCorpInst_Response_1', trkdResponse)
+export const formatSearchBondInstrumentsResponse = (trkdResponse) => formatSearchItems('GetGovCorpInst_Response_1', trkdResponse)

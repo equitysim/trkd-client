@@ -5,7 +5,7 @@ import {
   formatSearchEquityQuoteResponse,
   formatSearchAllResponse,
   formatSearchFundQuoteResponse,
-  formatSearchGovernmentAndCorporateBondInstruments,
+  formatSearchBondInstrumentsResponse,
 } from '../formatting'
 
 const __filename = fileURLToPath(import.meta.url)
@@ -126,7 +126,7 @@ const methods = {
 
     const res = await this._request(filename, methods.governmentAndCorporateBondInstruments, path, payload)
     if (!this.format) return res
-    return formatSearchGovernmentAndCorporateBondInstruments(res)
+    return formatSearchBondInstrumentsResponse(res)
   },
 }
 
