@@ -60,7 +60,7 @@ export default {
     name: 'percentChange',
   },
   RECORDTYPE: {
-    type: String,
+    type: Number,
     name: 'recordType',
   },
   DIVIDEND: {
@@ -131,7 +131,7 @@ export default {
     type: Number,
     name: 'optionType',
   },
-  CF_NAME: {
+  DSPLY_NAME: {
     type: String,
     name: 'displayName',
   },
@@ -215,4 +215,8 @@ export default {
     type: Number,
     name: 'cfNetChange',
   },
+  CF_NAME: {
+    type: String,
+    name: 'cfName'
+  }
 };

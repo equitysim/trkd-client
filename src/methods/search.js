@@ -110,7 +110,7 @@ const methods = {
    * @param {object} filters
    * @param {object} header
    */
-  async governmentAndCorporateBondInstruments(queries = Query.bondInstrument, filters = {}, header = Query.header) {
+  async bondInstrument(queries = Query.bondInstrument, filters = {}, header = Query.header) {
     const path = '/api/Search/Search.svc/REST/GovCorpInst_1/GetGovCorpInst_1'
 
     const query = new Query(queries)
@@ -124,7 +124,7 @@ const methods = {
       },
     }
 
-    const res = await this._request(filename, methods.governmentAndCorporateBondInstruments, path, payload)
+    const res = await this._request(filename, methods.bondInstrument, path, payload)
     if (!this.format) return res
     return formatSearchBondInstrumentsResponse(res)
   },

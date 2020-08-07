@@ -1,5 +1,5 @@
 import quoteFields from './field-maps/quote-fields'
-
+import recordTypes from './field-maps/record-types'
 /**
  * Used to construct TRKD models from the RetrieveItem3 response
  *
@@ -25,6 +25,10 @@ export const formatQuoteResponse = (trkdResponse) => {
 
           if (mapResult.type === String) {
             data = data.trim()
+          }
+
+          if (mapResult.name === 'recordType') {
+            data = recordTypes[data]
           }
 
           mapped[mapResult.name] = data
