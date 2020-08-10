@@ -14,12 +14,8 @@ export default class TRKDClient {
    * @param {string} options.username - TR username
    * @param {string} options.password - TR password
    * @param {?object<redisConnection>} options.redisConnection - redis|ioredis
-   * @param {?bool} options.format - Format responses - default: true
    */
   static init(options) {
-    if (options.format === undefined) TRKDClient.format = true
-    else TRKDClient.format = options.format
-
     TRKDClient._redisConn = options.redisConnection
 
     TRKDClient._serviceAccount.application = options.application
@@ -47,11 +43,11 @@ export default class TRKDClient {
   /**
    * @returns {TRKDClient}
    */
-  constructor() {
+  constructor({ format = true }) {
     this.host = 'https://api.trkd.thomsonreuters.com'
     this._request = this._request.bind(this)
-    this.format = TRKDClient.format
     this.log = TRKDClient.log
+    this.format = format;
 
     for (const [name, methods] of Object.entries(methodGroups)) {
       this[name] = methods

@@ -143,7 +143,12 @@ has no change
 | username | null | string | trkd provided
 | password | null | string | trkd provided
 | redisConnection | null | object | redis or ioredis connection
-| format | true | boolean | format responses into proper json
+
+# Formatting
+The SOAP responses from TR are formatted to proper JSON by default, however you can override this behaviour per instance with
+```
+const tkrClient = new TRKDClient({format: false})
+```
 
 # Caching and Limiting
 
