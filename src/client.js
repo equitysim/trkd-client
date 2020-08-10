@@ -43,11 +43,11 @@ export default class TRKDClient {
   /**
    * @returns {TRKDClient}
    */
-  constructor({ format = true }) {
+  constructor(props = { format: true }) {
     this.host = 'https://api.trkd.thomsonreuters.com'
     this._request = this._request.bind(this)
     this.log = TRKDClient.log
-    this.format = format;
+    this.format = props.format;
 
     for (const [name, methods] of Object.entries(methodGroups)) {
       this[name] = methods
