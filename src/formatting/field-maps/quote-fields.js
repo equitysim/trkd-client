@@ -1,8 +1,4 @@
 export default {
-  RIC: {
-    type: String,
-    name: 'id',
-  },
   CURRENCY: {
     type: String,
     name: 'currency',
@@ -76,7 +72,7 @@ export default {
     name: 'dividendPayDate',
   },
   DIVIDENDTP: {
-    type: Number,
+    type: String,
     name: 'dividendFrequency',
   },
   EXDIVDATE: {

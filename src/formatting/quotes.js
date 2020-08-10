@@ -1,5 +1,6 @@
 import quoteFields from './field-maps/quote-fields'
 import recordTypes from './field-maps/record-types'
+import dividendFrequencies from './field-maps/dividend-frequencies'
 /**
  * Used to construct TRKD models from the RetrieveItem3 response
  *
@@ -23,8 +24,12 @@ export const formatQuoteResponse = (trkdResponse) => {
             data = new Date(data)
           }
 
-          if (mapResult.type === String) {
+          if (mapResult.type === String && typeof data === 'string') {
             data = data.trim()
+          }
+
+          if (mapResult.name === 'dividendFrequency') {
+            data = dividendFrequencies[data] || 4
           }
 
           if (mapResult.name === 'recordType') {

@@ -40,11 +40,11 @@ export default {
     name: 'couponClass'
   },
   CouponFrequency: {
-    type: String,
+    type: Number,
     name: 'couponFrequency',
   },
   CouponRate: {
-    type: String,
+    type: Number,
     name: 'couponRate',
   },
   ISIN: {
