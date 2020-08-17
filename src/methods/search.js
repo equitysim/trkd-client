@@ -6,6 +6,8 @@ import {
   formatSearchAllResponse,
   formatSearchFundQuoteResponse,
   formatSearchBondInstrumentsResponse,
+  formatSearchDerivativeQuote,
+  formatSearchHeader,
 } from '../formatting'
 
 const __filename = fileURLToPath(import.meta.url)
@@ -33,7 +35,7 @@ const methods = {
     }
     const res = await this._request(filename, methods.all, path, payload)
     if (!this.format) return res
-    return formatSearchAllResponse(res)
+    return formatSearchAllResponse(res, header)
   },
   /**
    * @param {object} queries
@@ -41,7 +43,7 @@ const methods = {
    * @param {object} header
    * @returns {Promise}
    */
-  async derivativeQuote(queries = Query.optionQuote, filters = {}, header = Query.header) {
+  async derivativeQuote(queries = Query.derivativeQuote, filters = {}, header = Query.header) {
     const path = '/api/Search/Search.svc/REST/DerivativeQuote_1/GetDerivativeQuote_1'
 
     const query = new Query(queries)
@@ -56,7 +58,9 @@ const methods = {
       },
     }
     const res = await this._request(filename, methods.derivativeQuote, path, payload)
-    return res
+    if (!this.format) return res;
+
+    return formatSearchDerivativeQuote(res, header)
   },
   /**
    * @param {object} queries
@@ -79,7 +83,7 @@ const methods = {
     }
     const res = await this._request(filename, methods.equityQuote, path, payload)
     if (!this.format) return res
-    return formatSearchEquityQuoteResponse(res)
+    return formatSearchEquityQuoteResponse(res, header)
   },
   /**
    * @param {object} queries
@@ -103,7 +107,7 @@ const methods = {
 
     const res = await this._request(filename, methods.fundQuote, path, payload)
     if (!this.format) return res
-    return formatSearchFundQuoteResponse(res)
+    return formatSearchFundQuoteResponse(res, header)
   },
   /**
    * @param {object} queries
@@ -126,7 +130,7 @@ const methods = {
 
     const res = await this._request(filename, methods.bondInstrument, path, payload)
     if (!this.format) return res
-    return formatSearchBondInstrumentsResponse(res)
+    return formatSearchBondInstrumentsResponse(res, header)
   },
 }
 

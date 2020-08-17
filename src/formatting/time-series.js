@@ -2,7 +2,8 @@ import timeseriesFields from './field-maps/timeseries-fields'
 
 export const formatTimeSeriesResponse = (trkdResponse) => {
   const result = []
-  for (const values of trkdResponse['R']) {
+  let previousClose = 0;
+  for (const values of trkdResponse['R'] || []) {
     const fields = {}
     for (const [key, value] of Object.entries(values)) {
       const field = timeseriesFields[key]
@@ -14,6 +15,9 @@ export const formatTimeSeriesResponse = (trkdResponse) => {
         fields[field.name] = data
       }
     }
+    fields.netChange = fields.close - previousClose
+    fields.percentChange = fields.close / previousClose - 1
+    previousClose = fields.close
     result.push(fields)
   }
   return result
@@ -44,7 +48,9 @@ export const formatTimezoneResponse = (trkdResponse) => {
   function formatOffset(offset) {
     const hours = Math.floor(offset / 60)
     let strHours = hours.toString()
-    if (hours > 0) {
+    if (hours === 0) {
+      strHours = '+' + strHours
+    } else if (hours > 0) {
       if (strHours.length === 1) strHours = '0' + strHours
       strHours = '+' + strHours
     } else {
@@ -59,7 +65,7 @@ export const formatTimezoneResponse = (trkdResponse) => {
   }
 
   return data.map(zone => {
-    const isSummer = zone['HasSummerTime'] && zone['SummerStart'] < today && zone['SummerEnd'] > today
+    const isSummer = zone['HasSummerTime'] && new Date(zone['SummerStart']) < today && new Date(zone['SummerEnd']) > today
     const offset = formatOffset(isSummer ? zone['SummerOffset'] : zone['GMTOffset'])
     return {
       id: zone['ShortName'],

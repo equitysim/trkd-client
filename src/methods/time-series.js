@@ -1,6 +1,6 @@
 import { ValidationError } from '../dto/errors'
 import { formatTimeSeriesResponse, formatExchangeDataResponse, formatTimezoneResponse } from '../formatting'
-import { INTERDAY_INTERVAL } from '../utils/config'
+import { INTERDAY_INTERVAL, INTRADAY_INTERVAL } from '../utils/config'
 import { fileURLToPath } from 'url'
 import path from 'path'
 import { formatFile } from '../utils'
@@ -22,12 +22,12 @@ const methods = {
 
     if (typeof ric !== 'string') throw new ValidationError('ric must be a string', ric)
     if (!(startTime instanceof Date) || startTime > new Date()) throw new ValidationError('startTime must be less than now', startTime)
-    if (!(endTime instanceof Date) || endTime > new Date()) throw new ValidationError('endTime must be less than now', startTime)
+    if (!(endTime instanceof Date) || endTime > new Date()) throw new ValidationError('endTime must be less than now', endTime)
     if (!intervals.includes(interval)) throw new ValidationError(`interval must be one of the following: ${intervals.toString()}`, interval)
 
     const path = `/api/TimeSeries/TimeSeries.svc/REST/TimeSeries_1/GetIntradayTimeSeries_5`
     const payload = {
-      GetIntradayTimeSeries_Request_4: {
+      GetIntradayTimeSeries_Request_5: {
         Field: ['OPEN', 'HIGH', 'LOW', 'CLOSE', 'CLOSEYIELD', 'VOLUME', 'BID', 'ASK'],
         MetaField: ['NAME', 'QOS', 'CCY', 'NAME_LL'],
         TrimResponse: true,
@@ -55,7 +55,7 @@ const methods = {
 
     if (typeof ric !== 'string') throw new TypeError('ric must be a string')
     if (!(startTime instanceof Date) || startTime > new Date()) throw new ValidationError('startTime must be less than now', startTime)
-    if (!(endTime instanceof Date) || endTime > new Date()) throw new ValidationError('endTime must be less than now', startTime)
+    if (!(endTime instanceof Date) || endTime > new Date()) throw new ValidationError('endTime must be less than now', endTime)
     if (!intervals.includes(interval)) throw new ValidationError(`interval must be one of the following: ${intervals.toString()}`, interval)
 
     const path = `/api/TimeSeries/TimeSeries.svc/REST/TimeSeries_1/GetInterdayTimeSeries_5`

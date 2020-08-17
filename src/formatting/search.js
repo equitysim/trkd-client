@@ -20,19 +20,47 @@ const formatSearchItem = (item) => {
   return mapped
 }
 
-const formatSearchItems = (responseName, trkdResponse) => {
+const formatSearchItems = (trkdBody) => {
   const result = []
-  const items = trkdResponse[responseName]['Result']['Hit']
+  const items = trkdBody['Result']['Hit']
   for (const item of items) {
     result.push(formatSearchItem(item))
   }
   return result
 }
 
-export const formatSearchAllResponse = (trkdResponse) => formatSearchItems('GetSearchall_Response_1', trkdResponse)
+export const formatSearchAllResponse = (trkdResponse, header) => ({
+  docs: formatSearchItems(trkdResponse['GetSearchall_Response_1']),
+  ...formatSearchHeader(trkdResponse['GetSearchall_Response_1'], header),
+})
 
-export const formatSearchEquityQuoteResponse = (trkdResponse) => formatSearchItems('GetEquityQuote_Response_1', trkdResponse)
+export const formatSearchDerivativeQuote = (trkdResponse, header) => ({
+  docs: formatSearchItems(trkdResponse['GetDerivativeQuote_Response_1']),
+  ...formatSearchHeader(trkdResponse['GetDerivativeQuote_Response_1'], header)
+})
 
-export const formatSearchFundQuoteResponse = (trkdResponse) => formatSearchItems('GetFundQuote_Response_1', trkdResponse)
+export const formatSearchEquityQuoteResponse = (trkdResponse, header) => ({
+  docs: formatSearchItems(trkdResponse['GetEquityQuote_Response_1']),
+  ... formatSearchHeader(trkdResponse['GetEquityQuote_Response_1'], header)
+})
 
-export const formatSearchBondInstrumentsResponse = (trkdResponse) => formatSearchItems('GetGovCorpInst_Response_1', trkdResponse)
+export const formatSearchFundQuoteResponse = (trkdResponse, header) => ({
+  docs: formatSearchItems(trkdResponse['GetFundQuote_Response_1']),
+  ...formatSearchHeader(trkdResponse['GetEquityQuote_Response_1'], header)
+})
+
+export const formatSearchBondInstrumentsResponse = (trkdResponse, header) => ({
+  docs: formatSearchItems(trkdResponse['GetGovCorpInst_Response_1']),
+  ...formatSearchHeader(trkdResponse['GetGovCorpInst_Response_1'], header)
+})
+
+export const formatSearchHeader = (trkdBody, header) => {
+  const limit = header['MaxCount']
+  const responseHeader = trkdBody['ResultHeader']
+  return {
+    page: Math.floor(responseHeader['FirstHit'] / limit) + 1,
+    pages: Math.ceil(responseHeader['TotalHits'] / limit),
+    limit,
+    total: responseHeader['TotalHits'],
+  }
+}
