@@ -126,7 +126,9 @@ export default class TRKDClient {
         return json
       }
 
-      return res.text()
+      if (res.ok) return res.text()
+      console.error('[TRKDClient] Error:', res.status,res.statusText)
+      return { error: res.statusText }
     }
 
     const preAuth = async () => {
