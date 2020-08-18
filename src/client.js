@@ -47,7 +47,7 @@ export default class TRKDClient {
     this.host = 'https://api.rkd.reuters.com/'
     this._request = this._request.bind(this)
     this.log = TRKDClient.log
-    this.format = props.format;
+    this.format = props.format
 
     for (const [name, methods] of Object.entries(methodGroups)) {
       this[name] = methods
@@ -127,7 +127,7 @@ export default class TRKDClient {
       }
 
       if (res.ok) return res.text()
-      console.error('[TRKDClient] Error:', res.status,res.statusText)
+      console.error('[TRKDClient] Error:', res.status, res.statusText)
       return { error: res.statusText }
     }
 
@@ -144,15 +144,15 @@ export default class TRKDClient {
 
     if (TRKDClient._redisConn) {
       const cache = await TRKDClient._redisConn.get(`trkd:${TRKDClient._serviceAccount.username}`)
-      if (cache) {
-        const parsed = JSON.parse(cache)
-        const expiration = new Date(parsed['Expiration'])
-        if (new Date().getTime() > expiration.getTime() - TOKEN_EXP_BUFFER_MS) return preAuth()
+      if (!cache) return preAuth()
 
-        TRKDClient.updateCredentials(parsed['Token'], expiration)
-        headers['X-Trkd-Auth-Token'] = TRKDClient._serviceAccount.token
-        return execCall()
-      }
+      const parsed = JSON.parse(cache)
+      const expiration = new Date(parsed['Expiration'])
+      if (new Date().getTime() > expiration.getTime() - TOKEN_EXP_BUFFER_MS) return preAuth()
+
+      TRKDClient.updateCredentials(parsed['Token'], expiration)
+      headers['X-Trkd-Auth-Token'] = TRKDClient._serviceAccount.token
+      return execCall()
     }
   }
 }
