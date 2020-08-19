@@ -5,7 +5,7 @@ export default {
   },
   TRDPRC_1: {
     type: Number,
-    name: 'tradePrice',
+    name: 'currentPrice',
   },
   BID: {
     type: Number,
