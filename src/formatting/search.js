@@ -22,7 +22,7 @@ const formatSearchItem = (item) => {
 
 const formatSearchItems = (trkdBody) => {
   const result = []
-  const items = trkdBody['Result']['Hit']
+  const items = trkdBody['Result'] ? trkdBody['Result']['Hit'] : []
   for (const item of items) {
     result.push(formatSearchItem(item))
   }
@@ -36,31 +36,37 @@ export const formatSearchAllResponse = (trkdResponse, header) => ({
 
 export const formatSearchDerivativeQuote = (trkdResponse, header) => ({
   docs: formatSearchItems(trkdResponse['GetDerivativeQuote_Response_1']),
-  ...formatSearchHeader(trkdResponse['GetDerivativeQuote_Response_1'], header)
+  ...formatSearchHeader(trkdResponse['GetDerivativeQuote_Response_1'], header),
 })
 
 export const formatSearchEquityQuoteResponse = (trkdResponse, header) => ({
   docs: formatSearchItems(trkdResponse['GetEquityQuote_Response_1']),
-  ... formatSearchHeader(trkdResponse['GetEquityQuote_Response_1'], header)
+  ...formatSearchHeader(trkdResponse['GetEquityQuote_Response_1'], header),
 })
 
 export const formatSearchFundQuoteResponse = (trkdResponse, header) => ({
   docs: formatSearchItems(trkdResponse['GetFundQuote_Response_1']),
-  ...formatSearchHeader(trkdResponse['GetEquityQuote_Response_1'], header)
+  ...formatSearchHeader(trkdResponse['GetEquityQuote_Response_1'], header),
 })
 
 export const formatSearchBondInstrumentsResponse = (trkdResponse, header) => ({
   docs: formatSearchItems(trkdResponse['GetGovCorpInst_Response_1']),
-  ...formatSearchHeader(trkdResponse['GetGovCorpInst_Response_1'], header)
+  ...formatSearchHeader(trkdResponse['GetGovCorpInst_Response_1'], header),
 })
 
 export const formatSearchHeader = (trkdBody, header) => {
   const limit = header['MaxCount']
-  const responseHeader = trkdBody['ResultHeader']
-  return {
-    page: Math.floor(responseHeader['FirstHit'] / limit) + 1,
-    pages: Math.ceil(responseHeader['TotalHits'] / limit),
+  const result = {
+    page: 1,
+    pages: 0,
     limit,
-    total: responseHeader['TotalHits'],
+    total: 0,
   }
+  if (trkdBody) {
+    const responseHeader = trkdBody['ResultHeader']
+    result.page = Math.floor(responseHeader['FirstHit'] / limit) + 1
+    result.pages = Math.ceil(responseHeader['TotalHits'] / limit)
+    result.total = responseHeader['TotalHits']
+  }
+  return result
 }

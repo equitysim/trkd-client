@@ -124,7 +124,7 @@ export default {
     name: 'openInterestNetChange',
   },
   PUTCALLIND: {
-    type: Number,
+    type: String,
     name: 'optionType',
   },
   DSPLY_NAME: {
