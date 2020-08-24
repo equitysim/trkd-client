@@ -5,8 +5,8 @@ export default class Query {
         this[key] = {
           Include: true,
           StringValue: value.map((v) => {
-            const negated = value.charAt(0) === '!'
-            if (negated) value = value.substring(1)
+            const negated = v.charAt(0) === '!'
+            if (negated) v = v.substring(1)
             return { Value: v, Negated: negated }
           }),
         }
