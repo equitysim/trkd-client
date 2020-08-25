@@ -1,16 +1,16 @@
 import searchFields from './field-maps/search-fields'
 
-const formatSearchItem = (item) => {
+export const formatItem = (item, fieldsMap = searchFields) => {
   const mapped = {}
   for (const [key, value] of Object.entries(item)) {
-    const mapResult = searchFields[key]
+    const mapResult = fieldsMap[key]
     if (mapResult) {
       let data = value
       if (mapResult.type === Date) {
         data = new Date(data)
       }
 
-      if (mapResult.type === String) {
+      if (mapResult.type === String && typeof data === 'string') {
         data = data.trim()
       }
 
@@ -24,7 +24,7 @@ const formatSearchItems = (trkdBody) => {
   const result = []
   const items = trkdBody['Result'] ? trkdBody['Result']['Hit'] : []
   for (const item of items) {
-    result.push(formatSearchItem(item))
+    result.push(formatItem(item))
   }
   return result
 }
