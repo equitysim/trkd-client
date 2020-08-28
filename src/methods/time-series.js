@@ -22,7 +22,6 @@ const methods = {
 
     if (typeof ric !== 'string') throw new ValidationError('ric must be a string', ric)
     if (!(startTime instanceof Date) || startTime > new Date()) throw new ValidationError('startTime must be less than now', startTime)
-    if (!(endTime instanceof Date) || endTime > new Date()) throw new ValidationError('endTime must be less than now', endTime)
     if (!intervals.includes(interval)) throw new ValidationError(`interval must be one of the following: ${intervals.toString()}`, interval)
 
     const path = `/api/TimeSeries/TimeSeries.svc/REST/TimeSeries_1/GetIntradayTimeSeries_5`

@@ -1,6 +1,6 @@
 {
   "name": "@equitysim/trkd-client",
-  "version": "0.2.6",
+  "version": "0.2.7",
   "description": "REST Client for TRKD API",
   "main": "index.js",
   "type": "module",
@@ -16,7 +16,8 @@
     "equitysim",
     "finance",
     "trkd",
-    "thomson reuters"
+    "thomson reuters",
+    "refinitiv"
   ],
   "author": "equitysim",
   "license": "MIT",

@@ -7,7 +7,6 @@ import {
   formatSearchFundQuoteResponse,
   formatSearchBondInstrumentsResponse,
   formatSearchDerivativeQuote,
-  formatSearchHeader,
 } from '../formatting'
 
 const __filename = fileURLToPath(import.meta.url)

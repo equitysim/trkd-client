@@ -1,7 +1,7 @@
 import { fileURLToPath } from 'url'
 import path from 'path'
 import { formatFile } from '../utils'
-import { formatEventHeadlines } from '../formatting/street-events'
+import { formatEventHeadlines } from '../formatting'
 
 const __filename = fileURLToPath(import.meta.url)
 const filename = formatFile(path.parse(__filename).name)
