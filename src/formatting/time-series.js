@@ -49,7 +49,7 @@ export const formatTimezoneResponse = (trkdResponse) => {
     const hours = Math.floor(offset / 60)
     let strHours = hours.toString()
     if (hours === 0) {
-      strHours = '+' + strHours
+      strHours = '+00'
     } else if (hours > 0) {
       if (strHours.length === 1) strHours = '0' + strHours
       strHours = '+' + strHours
