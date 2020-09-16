@@ -1,3 +1,5 @@
+const regex = new RegExp(/(bound\w*)*/gi)
+
 /**
  *
  * Formats a bound function name
@@ -5,7 +7,7 @@
  * @param {function} fn
  * @returns {string}
  */
-export const formatFunc = (fn) => fn.name.replace('bound ', '')
+export const formatFunc = (fn) => fn.name.replace(regex, '').trim()
 
 /**
  *
