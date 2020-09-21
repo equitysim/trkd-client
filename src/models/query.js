@@ -10,6 +10,7 @@ export default class Query {
             return { Value: v, Negated: negated }
           }),
         }
+        continue
       }
 
       if (typeof value === 'object') {
