@@ -2,8 +2,10 @@ import timeseriesFields from './field-maps/timeseries-fields'
 
 export const formatTimeSeriesResponse = (trkdResponse) => {
   const result = []
-  let previousClose = 0;
-  for (const values of trkdResponse['R'] || []) {
+  let previousClose = 0
+  const length = trkdResponse['R'] && trkdResponse['R'].length || 0
+  for (let i = 0; i < length; i++) {
+    const values = trkdResponse['R'][i]
     const fields = {}
     for (const [key, value] of Object.entries(values)) {
       const field = timeseriesFields[key]
@@ -15,8 +17,8 @@ export const formatTimeSeriesResponse = (trkdResponse) => {
         fields[field.name] = data
       }
     }
-    fields.netChange = fields.close - previousClose
-    fields.percentChange = fields.close / previousClose - 1
+    fields.netChange = i == 0 ? 0 : fields.close - previousClose
+    fields.percentChange = i == 0 ? 0 : fields.close / previousClose - 1
     previousClose = fields.close
     result.push(fields)
   }
@@ -28,15 +30,15 @@ export const formatExchangeDataResponse = (trkdResponse) => {
   const result = {
     name: data['ExchangeName'],
     timezone: data['Timezone'],
-    tradingDays: data['TradingWeek']['TradingDay'].map(day => {
+    tradingDays: data['TradingWeek']['TradingDay'].map((day) => {
       const values = day['Session'][0]
       return {
         startDay: values['StartDay'],
         startTime: values['StartTime'],
         endDay: values['EndDay'],
-        endTime: values['EndTime']
+        endTime: values['EndTime'],
       }
-    })
+    }),
   }
   return result
 }
@@ -44,7 +46,7 @@ export const formatExchangeDataResponse = (trkdResponse) => {
 export const formatTimezoneResponse = (trkdResponse) => {
   const data = trkdResponse['GetTimezoneList_Response_1']['TimezoneList']['Timezone']
 
-  const today = new Date();
+  const today = new Date()
   function formatOffset(offset) {
     const hours = Math.floor(offset / 60)
     let strHours = hours.toString()
@@ -64,13 +66,13 @@ export const formatTimezoneResponse = (trkdResponse) => {
     return `${strHours}:${strMinutes}`
   }
 
-  return data.map(zone => {
+  return data.map((zone) => {
     const isSummer = zone['HasSummerTime'] && new Date(zone['SummerStart']) < today && new Date(zone['SummerEnd']) > today
     const offset = formatOffset(isSummer ? zone['SummerOffset'] : zone['GMTOffset'])
     return {
       id: zone['ShortName'],
       name: zone['LongName'],
-      offset: offset
+      offset: offset,
     }
   })
 }
