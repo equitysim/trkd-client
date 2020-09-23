@@ -1,6 +1,7 @@
 import { ValidationError } from '../dto/errors'
 import { fileURLToPath } from 'url'
 import path from 'path'
+import { formatSnapshotReportResponse } from '../formatting/fundamentals'
 
 const __filename = fileURLToPath(import.meta.url)
 const filename = path.parse(__filename).name
@@ -27,8 +28,8 @@ const methods = {
     };
 
     const res = await this._request(filename, methods.getSnapshotReports, path, payload)
-    // format
-    return res
+    if (!this.format) return res
+    return formatSnapshotReportResponse(res)
   }
 }
 
