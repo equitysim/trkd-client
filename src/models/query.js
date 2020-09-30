@@ -113,7 +113,12 @@ export default class Query {
       Currency: true,
       ExchangeCode: 'OPQ',
       ExpiryDate: true,
-      IsChain: false,
+      IsChain: {
+        Include: true,
+        BooleanValue: {
+          Value: false
+        }
+      },
       RIC: true,
       StrikePrice: true,
       TickerSymbol: true,
