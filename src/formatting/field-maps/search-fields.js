@@ -31,6 +31,14 @@ export default {
     type: String,
     name: 'country',
   },
+  AssetType: {
+    type: String,
+    name: 'assetType'
+  },
+  AssetCategory: {
+    type: String,
+    name: 'assetCategory'
+  },
   CouponClass: {
     type: String,
     name: 'couponClassCode',
