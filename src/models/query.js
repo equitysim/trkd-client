@@ -71,6 +71,8 @@ export default class Query {
       DerivedCategory: true,
       IssuerCommonName: true,
       IssuerCountry: true,
+      IsPrimaryRIC: true,
+      PrimaryRIC: true
     }
   }
   static get fundQuote() {

@@ -91,6 +91,14 @@ export default {
     type: Date,
     name: 'expiryDate',
   },
+  IsPrimaryRIC: {
+    type: Boolean,
+    name: 'isPrimaryRic'
+  },
+  PrimaryRIC:  {
+    type: String,
+    name: 'primaryRic'
+  },
   StrikePrice: {
     type: Number,
     name: 'strikePrice',
