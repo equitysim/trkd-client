@@ -23,7 +23,7 @@ export default {
     type: Number,
     name: 'openPrice',
   },
-  CLOSE_PRC: {
+  HST_CLOSE: {
     type: Number,
     name: 'closePrice'
   },
