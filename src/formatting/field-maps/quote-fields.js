@@ -143,6 +143,10 @@ export default {
     type: String,
     name: 'underlyingSecurityId',
   },
+  EMAIL_ADRS: {
+    type: String,
+    name: 'status'
+  },
   SEC_YLD_1: {
     type: Number,
     name: 'secondaryYield',
