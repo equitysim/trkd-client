@@ -15,6 +15,14 @@ export default {
     type: Number,
     name: 'ask',
   },
+  CLOSE_BID: {
+    type: Number,
+    name: 'closeBid',
+  },
+  CLOSE_ASK: {
+    type: Number,
+    name: 'closeAsk'
+  },
   CF_SOURCE: {
     type: String,
     name: 'exchangeCode',
