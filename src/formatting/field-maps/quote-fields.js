@@ -23,7 +23,7 @@ export default {
     type: Number,
     name: 'closeAsk'
   },
-  CF_SOURCE: {
+  CF_EXCHNG: {
     type: String,
     name: 'exchangeCode',
   },
