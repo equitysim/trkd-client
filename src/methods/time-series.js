@@ -52,7 +52,7 @@ const methods = {
   async getInterday(ric, startTime, endTime, interval) {
     const intervals = Object.values(INTERDAY_INTERVAL)
 
-    if (typeof ric !== 'string') throw new TypeError('ric must be a string')
+    if (typeof ric !== 'string' || ric === '') throw new TypeError('RIC must be a string')
     if (!(startTime instanceof Date) || startTime > new Date()) throw new ValidationError('startTime must be less than now', startTime)
     if (!intervals.includes(interval)) throw new ValidationError(`interval must be one of the following: ${intervals.toString()}`, interval)
 

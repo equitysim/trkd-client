@@ -14,7 +14,8 @@ const methods = {
     const hasFields = Array.isArray(fields) && fields.length > 0
 
     const path = '/api/Quotes/Quotes.svc/REST/Quotes_1/RetrieveItem_3'
-    const rics = Array.isArray(ric) ? ric : [ric]
+    const rics = (Array.isArray(ric) ? ric : [ric]).filter(Boolean)
+    if (rics.length === 0) return [];
     const payload = {
       RetrieveItem_Request_3: {
         ItemRequest: [
