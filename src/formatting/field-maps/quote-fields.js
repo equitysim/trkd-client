@@ -226,5 +226,9 @@ export default {
   CF_NAME: {
     type: String,
     name: 'cfName'
+  },
+  TDY_UN_CLS: {
+    type: String,
+    name: 'unofficialClosePrice'
   }
 };
