@@ -14,6 +14,7 @@ export default class TRKDClient {
    * @param {string} options.username - TR username
    * @param {string} options.password - TR password
    * @param {?object<redisConnection>} options.redisConnection - redis|ioredis
+   * @param {?boolean} options.log - log requests defaults to true
    */
   static init(options) {
     TRKDClient._redisConn = options.redisConnection
@@ -21,6 +22,7 @@ export default class TRKDClient {
     TRKDClient._serviceAccount.application = options.application
     TRKDClient._serviceAccount.username = options.username
     TRKDClient._serviceAccount.password = options.password
+    TRKDClient._log = options.log === undefined ? true : options.log
     TRKDClient._isInitialized = true
   }
 
@@ -110,6 +112,7 @@ export default class TRKDClient {
     }
 
     const execCall = async () => {
+      if (TRKDClient._log) console.log(`[trkd-client#request] ${path}`)
       const res = await fetch(`${this.host}${path}`, {
         method: 'POST',
         headers,
