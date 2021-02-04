@@ -46,7 +46,7 @@ export default class TRKDClient {
    * @returns {TRKDClient}
    */
   constructor(props = { format: true }) {
-    this.host = 'https://api.rkd.reuters.com/'
+    this.host = 'https://api.rkd.refinitiv.com'
     this._request = this._request.bind(this)
     this.log = TRKDClient.log
     this.format = props.format
